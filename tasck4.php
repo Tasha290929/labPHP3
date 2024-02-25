@@ -54,8 +54,23 @@ function calculAverage($transactions){
             $average = $totalAmount / $transactionCount;
             return $average;
         } else {
-            return 0; // Возвращаем 0, если нет транзакций, чтобы избежать деления на ноль.
+            return 0;
         }
+}
+
+function mapTransactionDescriptions($transactions) {
+    // Используем array_map() для извлечения описаний транзакций
+    $descriptions = array_map(function($transaction) {
+        return $transaction['transaction_description'];
+    }, $transactions);
+
+    // Используем array_reduce() для объединения описаний в один массив
+    $result = array_reduce($descriptions, function($carry, $description) {
+        $carry[] = $description;
+        return $carry;
+    }, []);
+
+    return $result;
 }
 
 ?>
@@ -90,4 +105,15 @@ function calculAverage($transactions){
     <td colspan="2"><strong>Cреднее арифметическое:</strong></td>
         <td colspan="3"> <?php echo calculAverage($transactions); ?></td>
     </tr>
+ 
+
+
+</table>
+
+<?php
+    $descriptions = mapTransactionDescriptions($transactions);
+
+
+print_r($descriptions);
+
 
